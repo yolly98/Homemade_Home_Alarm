@@ -60,9 +60,9 @@ void loop(){
   }
 
   if(digitalRead(MOVEMENT_SENSOR) == HIGH) // no movements detected
-    digitalWrite(EXT_LED, LOW);
-  else // movement detected
     digitalWrite(EXT_LED, HIGH);
+  else // movement detected
+    digitalWrite(EXT_LED, LOW);
 }
 
 
