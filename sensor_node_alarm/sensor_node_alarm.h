@@ -5,11 +5,18 @@
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
 
+#define MOVEMENT_SENSOR 2
+#define EXT_LED 3
+#define RELAY 4
+#define RESET 5
+
 #define SENSOR_ID "24"
 #define ROOM  "hall"
 #define WIFI_SSID "****"
 #define WIFI_PASSW "****"
 #define LOCAL_PORT 2390
+#define SERVER_IP "192.168.178.32"
+#define SERVER_PORT 2390
 
 class CommunicationModule{
 
