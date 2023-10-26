@@ -8,6 +8,8 @@
 #define RELAY 4
 #define RESET 5
 
+uint8_t MODE = SOLO_MODE;
+
 CommunicationModule communicationModule;
 
 void setup(){
@@ -30,6 +32,47 @@ void setup(){
   while(!Serial);
 
   communicationModule.initializeUDP();
+
+  delay(1000);
+
+  char packet[256];
+  sprintf(packet, "/%s/%s/INIT",ROOM, SENSOR_ID);
+
+  int max_attempts = 3;
+  while(max_attempts > 0){
+    communicationModule.sendPacket(packet, (IPAddress)SERVER_IP, (uint16_t)SERVER_PORT);
+    delay(5000);
+
+    IPAddress ip;
+    uint16_t port;
+    char receivedPacket[256];
+    if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
+
+      Serial.print("IP: ");
+      Serial.println(ip);
+      Serial.print("PORT: ");
+      Serial.println(port);
+      Serial.print("Contents: ");
+      Serial.println(receivedPacket);
+
+      if(strcmp(receivedPacket, "ACK") == 0){
+        MODE = NET_MODE;
+        digitalWrite(LEDR, LOW);
+        digitalWrite(LEDG, LOW);
+        digitalWrite(LEDB, HIGH);
+        break;
+      } else{
+        break;
+      }
+    }
+    max_attempts--;
+  }
+  if(MODE == SOLO_MODE){
+    digitalWrite(LEDR, LOW);
+    digitalWrite(LEDG, HIGH);
+    digitalWrite(LEDB, LOW);
+  }
+
 }
 
 void loop(){
@@ -38,7 +81,7 @@ void loop(){
   uint16_t port;
   char receivedPacket[256];
 
-  if ( communicationModule.receivePacket(receivedPacket, &ip, &port)){
+  if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
 
     Serial.print("IP: ");
     Serial.println(ip);
@@ -48,7 +91,7 @@ void loop(){
     Serial.println(receivedPacket);
 
     char ackPacket[256] = "ACK";
-    communicationModule.sendPacket(ackPacket, ip, port);
+    communicationModule.sendPacket(ackPacket, ip, (uint16_t)SERVER_PORT);
     delay(1000);
 
     if(strcmp(receivedPacket, "RESTART") == 0)

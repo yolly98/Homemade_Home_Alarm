@@ -1,22 +1,27 @@
 import socket
+import threading
 
-# Crea un socket UDP
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_ip = '192.168.178.48'
+server_port = 2390
+local_port = 2390
 
-server_address = ('192.168.178.48', 2390)  # Sostituisci con il tuo indirizzo IP e porta
+def udp_listener():
+    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    udp_socket.bind(('0.0.0.0', local_port))
+    print("Listener thread started")
+    while True:
+        data, addr = udp_socket.recvfrom(local_port)
+        print(f"\nReceived UDP message from {addr}: {data.decode('utf-8')}")
 
-while True:
-    message = input("Inserisci il tuo messaggio: ")
+def udp_sender():
+    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    print("Sender Thread started")
+    while True:
+        message = input("Insert Message to send: ")
+        udp_socket.sendto(message.encode('utf-8'), (server_ip, server_port))
 
-    if message.lower() == "esci":
-        break
+udp_listener_thread = threading.Thread(target=udp_listener)
+udp_sender_thread = threading.Thread(target=udp_sender)
 
-    # Invia il messaggio
-    sent = sock.sendto(message.encode(), server_address)
-
-    # Aspetta la risposta
-    print('In attesa di risposta...')
-    data, server = sock.recvfrom(4096)
-    print('Ricevuto {!r}'.format(data.decode()))
-
-sock.close()
+udp_listener_thread.start()
+udp_sender_thread.start()

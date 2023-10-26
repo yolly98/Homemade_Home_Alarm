@@ -18,6 +18,10 @@
 #define SERVER_IP "192.168.178.32"
 #define SERVER_PORT 2390
 
+#define SOLO_MODE 0
+#define NET_MODE 1
+
+
 class CommunicationModule{
 
   WiFiUDP Udp;
