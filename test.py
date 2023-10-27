@@ -12,6 +12,7 @@ def udp_listener():
     while True:
         data, addr = udp_socket.recvfrom(local_port)
         print(f"\nReceived UDP message from {addr}: {data.decode('utf-8')}")
+        udp_socket.sendto("ACK".encode('utf-8'), (server_ip, server_port))
 
 def udp_sender():
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

@@ -17,10 +17,26 @@
 #define LOCAL_PORT 2390
 #define SERVER_IP "192.168.178.32"
 #define SERVER_PORT 2390
+#define COMMUNICATION_ATTEMPTS 3
+#define SENDING_DELAY 5000
+#define ACTIVATION_DELAY 30000
+#define EXT_LED_BLINK_INTERVAL 500
+#define PACKET_SIZE 50
 
 #define SOLO_MODE 0
 #define NET_MODE 1
 
+enum Colors { Red = 0, Blue = 1, Green = 2, White = 3, Off = 4};
+
+class LedStatusModule{
+
+  Colors status;
+  
+  public:
+  void init();
+  void set(Colors color);
+  Colors getStatus();
+};
 
 class CommunicationModule{
 
@@ -34,5 +50,16 @@ class CommunicationModule{
     bool receivePacket(char* data, IPAddress* ip, uint16_t* port);
 };
 
-extern CommunicationModule communication_module;
+class MovementSensor{
+
+  bool status;
+
+  public:
+  void init();
+  void activateAlarm();
+  void deactivateAlarm();
+  bool check();
+  bool getStatus();
+};
+
 #endif

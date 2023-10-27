@@ -3,110 +3,133 @@
 
 #include "sensor_node_alarm.h"
 
-#define MOVEMENT_SENSOR 2
-#define EXT_LED 3
-#define RELAY 4
-#define RESET 5
-
 uint8_t MODE = SOLO_MODE;
 
+LedStatusModule ledStatusModule;
 CommunicationModule communicationModule;
+MovementSensor movementSensor;
+bool movementDetected = false;
 
 void setup(){
   
-  pinMode(LEDR, OUTPUT);
-  pinMode(LEDB, OUTPUT);
-  pinMode(LEDG, OUTPUT);
-  pinMode(MOVEMENT_SENSOR, INPUT);
-  pinMode(EXT_LED, OUTPUT);
-  pinMode(RELAY, OUTPUT);
+  // MODULES INIZIALIZATION
   pinMode(RESET, OUTPUT);
-
   digitalWrite(RESET, HIGH);
-  digitalWrite(RELAY, HIGH);
-  digitalWrite(EXT_LED, LOW);
-  digitalWrite(LEDR, HIGH);
-  digitalWrite(LEDB, HIGH);
-  digitalWrite(LEDG, HIGH);
+
   Serial.begin(9600);
   while(!Serial);
-
+  
+  ledStatusModule.init();
+  movementSensor.init();
+  ledStatusModule.set(Colors::White);
   communicationModule.initializeUDP();
 
   delay(1000);
 
-  char packet[256];
+  char packet[PACKET_SIZE];
   sprintf(packet, "/%s/%s/INIT",ROOM, SENSOR_ID);
 
-  int max_attempts = 3;
+  // INITIALIZATION PROTOCOL
+  // The sensor node attempts to contact the server to register itself in the network.
+  // If it doesn't receve any response, it will work in SOLO_MODE, otherwise in NET_MODE
+  int max_attempts = COMMUNICATION_ATTEMPTS;
   while(max_attempts > 0){
     communicationModule.sendPacket(packet, (IPAddress)SERVER_IP, (uint16_t)SERVER_PORT);
-    delay(5000);
+    delay(SENDING_DELAY);
 
     IPAddress ip;
     uint16_t port;
-    char receivedPacket[256];
+    char receivedPacket[PACKET_SIZE];
     if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
-
-      Serial.print("IP: ");
-      Serial.println(ip);
-      Serial.print("PORT: ");
-      Serial.println(port);
-      Serial.print("Contents: ");
-      Serial.println(receivedPacket);
 
       if(strcmp(receivedPacket, "ACK") == 0){
         MODE = NET_MODE;
-        digitalWrite(LEDR, LOW);
-        digitalWrite(LEDG, LOW);
-        digitalWrite(LEDB, HIGH);
+        ledStatusModule.set(Colors::Blue);
         break;
       } else{
-        break;
+        ledStatusModule.set(Colors::Red);
+        while(true){delay(1000);};
       }
     }
     max_attempts--;
   }
   if(MODE == SOLO_MODE){
-    digitalWrite(LEDR, LOW);
-    digitalWrite(LEDG, HIGH);
-    digitalWrite(LEDB, LOW);
+    // In SOLO_MODE the alarm is always activated
+    ledStatusModule.set(Colors::Green);
+    movementSensor.activateAlarm();
   }
 
 }
 
 void loop(){
 
-  IPAddress ip;
-  uint16_t port;
-  char receivedPacket[256];
-
-  if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
-
-    Serial.print("IP: ");
-    Serial.println(ip);
-    Serial.print("PORT: ");
-    Serial.println(port);
-    Serial.print("Contents: ");
-    Serial.println(receivedPacket);
-
-    char ackPacket[256] = "ACK";
-    communicationModule.sendPacket(ackPacket, ip, (uint16_t)SERVER_PORT);
-    delay(1000);
-
-    if(strcmp(receivedPacket, "RESTART") == 0)
-      digitalWrite(RESET, LOW);
-    else if(strcmp(receivedPacket, "START") == 0)
-      digitalWrite(RELAY, LOW);
-    else if(strcmp(receivedPacket, "END") == 0)
-      digitalWrite(RELAY, HIGH);
+  if(MODE == SOLO_MODE){
+    movementDetected = movementSensor.check();
   }
+  else if(MODE == NET_MODE){
 
-  if(digitalRead(MOVEMENT_SENSOR) == HIGH) // no movements detected
-    digitalWrite(EXT_LED, HIGH);
-  else // movement detected
-    digitalWrite(EXT_LED, LOW);
+    // Check if there is a new message from the server
+    IPAddress ip;
+    uint16_t port;
+    char receivedPacket[PACKET_SIZE];
+    if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
+
+      if(strcmp(receivedPacket, "ACK") != 0){
+        char ackPacket[PACKET_SIZE] = "ACK";
+        communicationModule.sendPacket(ackPacket, ip, (uint16_t)SERVER_PORT);
+        delay(1000);
+      }
+      if(strcmp(receivedPacket, "RESTART") == 0)
+        digitalWrite(RESET, LOW);
+      else if(strcmp(receivedPacket, "ON") == 0)
+        movementSensor.activateAlarm();
+      else if(strcmp(receivedPacket, "OFF") == 0)
+        movementSensor.deactivateAlarm();
+      else if(strcmp(receivedPacket, "STATUS") == 0)
+        if(movementSensor.getStatus()){
+          char packet[PACKET_SIZE];
+          sprintf(packet, "/%s/%s/STATUS/ON",ROOM, SENSOR_ID);
+          communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
+          delay(1000);
+        }
+        else{
+          char packet[PACKET_SIZE];
+          sprintf(packet, "/%s/%s/STATUS/OFF",ROOM, SENSOR_ID);
+          communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
+          delay(1000);
+        }
+
+    }
+
+    // If the alarm is activated and a movement is detected the sensor node alert the server
+    bool tmp = movementSensor.check();
+    if(tmp != movementDetected){
+
+      char packet[PACKET_SIZE];
+
+      if(tmp)
+        sprintf(packet, "/%s/%s/DETECTED",ROOM, SENSOR_ID);
+      else
+        sprintf(packet, "/%s/%s/FREE",ROOM, SENSOR_ID);
+
+      int max_attempts = COMMUNICATION_ATTEMPTS;
+      while(max_attempts > 0){
+        communicationModule.sendPacket(packet, (IPAddress)SERVER_IP, (uint16_t)SERVER_PORT);
+        delay(SENDING_DELAY);
+
+        IPAddress ip;
+        uint16_t port;
+        char receivedPacket[PACKET_SIZE];
+        if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
+
+          if(strcmp(receivedPacket, "ACK") == 0)
+            break;
+        }
+        max_attempts--;
+      }
+    }
+    movementDetected = tmp;
+  }
 }
-
 
 #endif

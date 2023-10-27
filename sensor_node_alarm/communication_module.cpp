@@ -65,23 +65,22 @@ bool CommunicationModule::receivePacket(char* packetBuffer, IPAddress* ip, uint1
 
   if (packetSize) {
 
-    Serial.print("Received packet of size ");
-    Serial.println(packetSize);
-    Serial.print("From ");
-
-    IPAddress remoteIp = Udp.remoteIP();
-    Serial.print(remoteIp);
-    Serial.print(", port ");
-    Serial.println(Udp.remotePort());
-
     // read the packet into packetBufffer
-    int len = Udp.read(packetBuffer, 255);
+    int len = Udp.read(packetBuffer, PACKET_SIZE);
     if (len > 0) {
       packetBuffer[len] = 0;
     }
 
     *ip = Udp.remoteIP();
     *port = Udp.remotePort();
+
+    Serial.print("IP: ");
+    Serial.println(*ip);
+    Serial.print("PORT: ");
+    Serial.println(*port);
+    Serial.print("Contents: ");
+    Serial.println(packetBuffer);
+
     return true;
   }
   else
