@@ -1,0 +1,7 @@
+threading
+socket
+queue
+pydub
+time
+signal
+os

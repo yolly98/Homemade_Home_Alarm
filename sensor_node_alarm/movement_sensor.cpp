@@ -16,8 +16,14 @@ void MovementSensor::init(){
 void MovementSensor::activateAlarm(){
   status = true;
   digitalWrite(RELAY, LOW);
+  bool led_status = false;
+  digitalWrite(EXT_LED, LOW);
   for(int i = 0; i < floor(ACTIVATION_DELAY / EXT_LED_BLINK_INTERVAL); i++){
-    digitalWrite(EXT_LED, !digitalRead(EXT_LED));
+    led_status = !led_status;
+    if (led_status)
+      digitalWrite(EXT_LED, HIGH);
+    else
+      digitalWrite(EXT_LED, LOW);
     delay(EXT_LED_BLINK_INTERVAL);
   }
   digitalWrite(EXT_LED, LOW);

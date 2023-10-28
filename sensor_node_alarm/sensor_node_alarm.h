@@ -12,8 +12,8 @@
 
 #define SENSOR_ID "24"
 #define ROOM  "hall"
-#define WIFI_SSID "****"
-#define WIFI_PASSW "****"
+#define WIFI_SSID "yollyWIFI_2,4GHz"
+#define WIFI_PASSW "CossiADaEssa"
 #define LOCAL_PORT 2390
 #define SERVER_IP "192.168.178.32"
 #define SERVER_PORT 2390
@@ -22,7 +22,7 @@
 #define ACTIVATION_DELAY 30000
 #define EXT_LED_BLINK_INTERVAL 500
 #define PACKET_SIZE 50
-
+#define KEEP_ALIVE_TIMER 1000 * 60 * 10
 #define SOLO_MODE 0
 #define NET_MODE 1
 

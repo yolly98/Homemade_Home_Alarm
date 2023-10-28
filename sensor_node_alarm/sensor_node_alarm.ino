@@ -9,6 +9,7 @@ LedStatusModule ledStatusModule;
 CommunicationModule communicationModule;
 MovementSensor movementSensor;
 bool movementDetected = false;
+unsigned long keep_alive_timer = NULL;
 
 void setup(){
   
@@ -17,7 +18,6 @@ void setup(){
   digitalWrite(RESET, HIGH);
 
   Serial.begin(9600);
-  while(!Serial);
   
   ledStatusModule.init();
   movementSensor.init();
@@ -45,6 +45,7 @@ void setup(){
       if(strcmp(receivedPacket, "ACK") == 0){
         MODE = NET_MODE;
         ledStatusModule.set(Colors::Blue);
+        keep_alive_timer = millis();
         break;
       } else{
         ledStatusModule.set(Colors::Red);
@@ -68,36 +69,65 @@ void loop(){
   }
   else if(MODE == NET_MODE){
 
+    // Contact Server every KEEP_ALIVE_TIMER
+    if(millis() - keep_alive_timer > KEEP_ALIVE_TIMER){
+
+      char packet[PACKET_SIZE];
+      
+      if(movementSensor.getStatus()){
+          sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
+          communicationModule.sendPacket(packet, SERVER_IP, (uint16_t)SERVER_PORT);
+          delay(1000);
+      }
+      else{
+        char packet[PACKET_SIZE];
+        sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
+        communicationModule.sendPacket(packet, SERVER_IP, (uint16_t)SERVER_PORT);
+        delay(1000);
+      }
+      keep_alive_timer = millis();
+    }
+
     // Check if there is a new message from the server
     IPAddress ip;
     uint16_t port;
     char receivedPacket[PACKET_SIZE];
+
     if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
 
-      if(strcmp(receivedPacket, "ACK") != 0){
-        char ackPacket[PACKET_SIZE] = "ACK";
-        communicationModule.sendPacket(ackPacket, ip, (uint16_t)SERVER_PORT);
+      char packet[PACKET_SIZE];
+
+      if(strcmp(receivedPacket, "RESET") == 0){
+        sprintf(packet, "/%s/%s/RESET",ROOM, SENSOR_ID);
+        communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
         delay(1000);
-      }
-      if(strcmp(receivedPacket, "RESTART") == 0)
         digitalWrite(RESET, LOW);
-      else if(strcmp(receivedPacket, "ON") == 0)
+      }
+      else if(strcmp(receivedPacket, "ON") == 0){
+        sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
+        communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
+        delay(1000);
         movementSensor.activateAlarm();
-      else if(strcmp(receivedPacket, "OFF") == 0)
+      }
+      else if(strcmp(receivedPacket, "OFF") == 0){
+        sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
+        communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
+        delay(1000);
         movementSensor.deactivateAlarm();
-      else if(strcmp(receivedPacket, "STATUS") == 0)
+      }
+      else if(strcmp(receivedPacket, "STATUS") == 0){
         if(movementSensor.getStatus()){
-          char packet[PACKET_SIZE];
-          sprintf(packet, "/%s/%s/STATUS/ON",ROOM, SENSOR_ID);
+          sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
           communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
           delay(1000);
         }
         else{
           char packet[PACKET_SIZE];
-          sprintf(packet, "/%s/%s/STATUS/OFF",ROOM, SENSOR_ID);
+          sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
           communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
           delay(1000);
         }
+      }
 
     }
 
