@@ -17,7 +17,7 @@ def keep_alive_timer():
         for node_id in nodes:
             node = nodes[node_id]
             node['status'] = 'dead'
-            Cache.get_instance().add_node(node) 
+            Cache.get_instance().add_node(node_id, node) 
             UDPServer.send('STATUS', node['addr'], node['port'])
 
 
