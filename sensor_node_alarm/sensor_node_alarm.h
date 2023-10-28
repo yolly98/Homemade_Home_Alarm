@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
+#include "secrets.h"
 
 #define MOVEMENT_SENSOR 2
 #define EXT_LED 3
@@ -12,8 +13,8 @@
 
 #define SENSOR_ID "24"
 #define ROOM  "hall"
-#define WIFI_SSID "yollyWIFI_2,4GHz"
-#define WIFI_PASSW "CossiADaEssa"
+#define WIFI_SSID MY_WIFI_SSID
+#define WIFI_PASSW MY_WIFI_PASSW
 #define LOCAL_PORT 2390
 #define SERVER_IP "192.168.178.32"
 #define SERVER_PORT 2390
