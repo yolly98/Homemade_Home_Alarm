@@ -4,7 +4,7 @@ from AlarmManager import AlarmManager
 from Cache import Cache
 import threading
 import time
-from TelegramManager import TelegramManager
+from TelegramBotManager import TelegramBotManager
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 # 1 minute
@@ -45,10 +45,12 @@ def msg_from_node_handler():
             node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': True}
             Cache.get_instance().add_node(node_id, node)
             AlarmManager.get_instance().update_detections(node_id, True)
+            TelegramBotManager.get_instance().send_message_to_telegram(f'[{node_id}] movement detected')
         elif cmd == 'FREE':
             node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
             AlarmManager.get_instance().update_detections(node_id, False)
+            TelegramBotManager.get_instance().send_message_to_telegram(f'[{node_id}] no movement detected')
         
 
 if __name__ == '__main__':
@@ -60,7 +62,7 @@ if __name__ == '__main__':
     cli_manager_thread = threading.Thread(target=CLI.get_instance().listen)
     alarm_manager_thread = threading.Thread(target=AlarmManager.get_instance().alarm_player)
     keep_alive_thread = threading.Thread(target=keep_alive_timer)
-    telegram_bot_manager = threading.Thread(target=TelegramManager.get_instance().telegram_bot())
+    telegram_bot_manager = threading.Thread(target=TelegramBotManager.get_instance().telegram_bot())
 
     CLI.init()
     

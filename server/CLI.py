@@ -1,6 +1,7 @@
 from UDPServer import UDPServer
 from AlarmManager import AlarmManager
 from Cache import Cache
+from Protocols import Protocols
 import os
 import signal
 
@@ -22,6 +23,7 @@ class CLI:
         print('- exit')
         print('- alarm [on/off]')
         print('- keep_alive')
+        print('- reset')
         print('--------------------------------------------------')
 
     @staticmethod
@@ -34,52 +36,60 @@ class CLI:
         while True:
             cmd = input("> ")
             cmd = cmd.split(' ')
-            # menage command
+
+            # ----- HELP COMMAND ----- #
             if cmd[0] == 'help':
                 self.init()
             elif cmd[0] == 'status':
-                nodes = Cache.get_instance().get_nodes()
-                if len(nodes) == 0:
+                status = Protocols.status()
+                print('----------------------------------')
+                print(f"alarm: {status['alarm']}")
+                if len(status['nodes']) == 0:
                     print('No sensor nodes connected')
                 else:
-                    for node_id in nodes:
-                        print(nodes[node_id])
+                    for node_id in status['nodes']:
+                        print(status['nodes'][node_id])
+                print('----------------------------------')
+
+            # ----- EXIT COMMAND ----- #
             elif cmd[0] == 'exit':
                 print('Exit ...')
                 try:
                     os.kill(os.getpid(), signal.SIGINT)
                 except:
                     pass
+            
+            # ----- ALRM ON/OFF COMMAND ----- #
             elif cmd[0] == 'alarm':
                 if len(cmd) < 2 or (cmd[1] != 'on' and cmd[1] != 'off'):
                     print('wrong command: alarm [on/off]')
                     continue
-                AlarmManager.get_instance().reset()
-                nodes = Cache.get_instance().get_nodes()
-                for node_id in nodes:
-                    node = nodes[node_id]
-                    if cmd[1] == 'on':
-                        UDPServer.send('ON', node['addr'], node['port'])
-                    else:
-                        UDPServer.send('OFF', node['addr'], node['port'])
+                if cmd[1] == 'on':
+                    Protocols.alarm_on()
+                else:
+                    Protocols.alarm_off()
+
+            # ----- SEND COMMAND ----- #
             elif cmd[0] == 'send':
                 if len(cmd) < 4:
                     print('wrong command: send [room] [node_id] [cmd]')
                     continue
                 node_id = f'/{cmd[1]}/{cmd[2]}'
-                node = Cache.get_instance().get_node(node_id)
-                if node is None:
+                res = Protocols.send_cmd(node_id, cmd[3])
+                if not res:
                     print("Node doesn't exists")
-                else:
-                    UDPServer.send(cmd[3], node['addr'], node['port'])
+            
+            # ----- KEEP_ALIVE COMMAND ----- #
             elif cmd[0] == 'keep_alive':
-                nodes = Cache.get_instance().get_nodes()
-                if len(nodes) == 0:
+                res = Protocols.keep_alive()
+                if not res:
                     print('No sensor nodes connected')
-                else:
-                    for node_id in nodes:
-                        node = nodes[node_id]
-                        UDPServer.send('STATUS', node['addr'], node['port'])
+
+            # ----- RESET COMMAND ----- #
+            elif cmd[0] == 'reset':
+                res = Protocols.reset()
+                if not res:
+                    print('No sensor nodes connected')
 
 
             
