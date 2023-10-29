@@ -6,3 +6,7 @@ time
 signal
 os
 json
+telegram
+telegram.ext
+re
+requests

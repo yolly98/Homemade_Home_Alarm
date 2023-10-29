@@ -1,3 +1,5 @@
 **/__pycache__
 **/venv/
 **/secrets.h
+**/telegram_user_file.txt
+**/telegram_bot_file.txt

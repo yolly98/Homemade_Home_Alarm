@@ -4,6 +4,7 @@ from AlarmManager import AlarmManager
 from Cache import Cache
 import threading
 import time
+from TelegramManager import TelegramManager
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 # 1 minute
@@ -59,6 +60,7 @@ if __name__ == '__main__':
     cli_manager_thread = threading.Thread(target=CLI.get_instance().listen)
     alarm_manager_thread = threading.Thread(target=AlarmManager.get_instance().alarm_player)
     keep_alive_thread = threading.Thread(target=keep_alive_timer)
+    telegram_bot_manager = threading.Thread(target=TelegramManager.get_instance().telegram_bot())
 
     CLI.init()
     
@@ -67,9 +69,11 @@ if __name__ == '__main__':
     cli_manager_thread.start()
     alarm_manager_thread.start()
     keep_alive_thread.start()
+    telegram_bot_manager.start()
 
     udp_listener_thread.join()
     msg_from_nodes_manager.join()
     cli_manager_thread.join()
     alarm_manager_thread.join()
     keep_alive_thread.join()
+    telegram_bot_manager.join()
