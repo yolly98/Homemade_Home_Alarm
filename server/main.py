@@ -5,6 +5,7 @@ from Cache import Cache
 import threading
 import time
 from TelegramBotManager import TelegramBotManager
+from WebServer import WebServer
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 # 1 minute
@@ -72,6 +73,8 @@ if __name__ == '__main__':
     alarm_manager_thread.start()
     keep_alive_thread.start()
     telegram_bot_manager.start()
+
+    WebServer.get_instance().listen("0.0.0.0", "9000")
 
     udp_listener_thread.join()
     msg_from_nodes_manager.join()

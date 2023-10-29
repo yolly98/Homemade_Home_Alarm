@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch Example</title>
+</head>
+<body>
+    <button onclick="getStatus()">Get Status</button>
+    <button onclick="keepAlive()">Keep Alive</button>
+    <button onclick="alarmOn()">Alarm On</button>
+    <button onclick="alarmOff()">Alarm Off</button>
+    <button onclick="reset()">Reset</button>
+    <button onclick="sendData()">Send Data</button>
+
+    <script>
+        const serverURL = "http://192.168.178.32:9000";
+
+        function fetchWithMethod(method, endpoint) {
+
+            const requestData = {
+                key1: 'value1',
+                key2: 'value2'
+            };
+
+            fetch(serverURL + endpoint, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert(data.body);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function getStatus() {
+            fetchWithMethod("POST", "/status");
+        }
+
+        function keepAlive() {
+            fetchWithMethod("POST", "/keep_alive");
+        }
+
+        function alarmOn() {
+            fetchWithMethod("POST", "/alarm_on");
+        }
+
+        function alarmOff() {
+            fetchWithMethod("POST", "/alarm_off");
+        }
+
+        function reset() {
+            fetchWithMethod("POST", "/reset");
+        }
+
+        function sendData() {
+            fetchWithMethod("POST", "/send");
+        }
+    </script>
+</body>
+</html>
