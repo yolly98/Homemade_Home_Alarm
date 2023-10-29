@@ -32,27 +32,22 @@ def msg_from_node_handler():
         cmd = msg[4]
         node_id = f'/{room}/{id}'
         if cmd == 'INIT':
-            node = {'addr': addr, 'port': port, 'room': room, 'node_id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
-            UDPServer.send('ACK', addr, port)
         elif cmd == 'ON':
-            node = {'addr': addr, 'port': port, 'room': room, 'node_id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
-            UDPServer.send('ACK', addr, port)
         elif cmd == 'OFF':
-            node = {'addr': addr, 'port': port, 'room': room, 'node_id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
-            UDPServer.send('ACK', addr, port)
         elif cmd == 'DETECTED':
-            node = {'addr': addr, 'port': port, 'room': room, 'node_id': id, 'status': 'alive', 'alarm': 'on', 'detection': True}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': True}
             Cache.get_instance().add_node(node_id, node)
-            AlarmManager.get_instance().update_detections(True)
-            UDPServer.send('ACK', addr, port)
+            AlarmManager.get_instance().update_detections(node_id, True)
         elif cmd == 'FREE':
-            node = {'addr': addr, 'port': port, 'room': room, 'node_id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
-            AlarmManager.get_instance().update_detections(False)
-            UDPServer.send('ACK', addr, port)
+            AlarmManager.get_instance().update_detections(node_id, False)
         
 
 if __name__ == '__main__':

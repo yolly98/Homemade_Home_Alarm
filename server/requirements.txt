@@ -5,3 +5,4 @@ pydub
 time
 signal
 os
+json

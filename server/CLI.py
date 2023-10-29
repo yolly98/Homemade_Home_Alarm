@@ -63,7 +63,7 @@ class CLI:
                     else:
                         UDPServer.send('OFF', node['addr'], node['port'])
             elif cmd[0] == 'send':
-                if len(cmd) < 3:
+                if len(cmd) < 4:
                     print('wrong command: send [room] [node_id] [cmd]')
                     continue
                 node_id = f'/{cmd[1]}/{cmd[2]}'

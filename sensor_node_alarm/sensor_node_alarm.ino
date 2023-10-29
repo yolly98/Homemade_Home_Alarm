@@ -77,13 +77,13 @@ void loop(){
       if(movementSensor.getStatus()){
           sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
           communicationModule.sendPacket(packet, SERVER_IP, (uint16_t)SERVER_PORT);
-          delay(1000);
+          delay(100);
       }
       else{
         char packet[PACKET_SIZE];
         sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
         communicationModule.sendPacket(packet, SERVER_IP, (uint16_t)SERVER_PORT);
-        delay(1000);
+        delay(100);
       }
       keep_alive_timer = millis();
     }
@@ -100,32 +100,32 @@ void loop(){
       if(strcmp(receivedPacket, "RESET") == 0){
         sprintf(packet, "/%s/%s/RESET",ROOM, SENSOR_ID);
         communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
-        delay(1000);
+        delay(100);
         digitalWrite(RESET, LOW);
       }
       else if(strcmp(receivedPacket, "ON") == 0){
         sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
         communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
-        delay(1000);
+        delay(100);
         movementSensor.activateAlarm();
       }
       else if(strcmp(receivedPacket, "OFF") == 0){
         sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
         communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
-        delay(1000);
+        delay(SENDING_DELAY);
         movementSensor.deactivateAlarm();
       }
       else if(strcmp(receivedPacket, "STATUS") == 0){
         if(movementSensor.getStatus()){
           sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
           communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
-          delay(1000);
+          delay(SENDING_DELAY);
         }
         else{
           char packet[PACKET_SIZE];
           sprintf(packet, "/%s/%s/OFF",ROOM, SENSOR_ID);
           communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
-          delay(1000);
+          delay(SENDING_DELAY);
         }
       }
 

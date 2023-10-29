@@ -29,6 +29,7 @@ class UDPServer:
             received_msg = data.decode('utf-8')
             print(f"\nReceived UDP message from {addr}: {received_msg}")
             self.msgQueue.put(f'{addr[0]}/{addr[1]}{received_msg}')
+            UDPServer.send('ACK', addr[0], int(addr[1]))
             
     def send(msg, ip, port):
         tmp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

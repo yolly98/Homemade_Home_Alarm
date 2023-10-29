@@ -1,0 +1,20 @@
+{
+    "/hall/24": {
+        "addr": "192.168.178.48",
+        "port": 2390,
+        "room": "hall",
+        "id": "24",
+        "status": "alive",
+        "alarm": "off",
+        "detection": false
+    },
+    "/bathroom/1": {
+        "addr": "192.168.178.51",
+        "port": 2390,
+        "room": "bathroom",
+        "id": "1",
+        "status": "alive",
+        "alarm": "off",
+        "detection": false
+    }
+}
