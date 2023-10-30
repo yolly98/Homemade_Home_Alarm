@@ -2,6 +2,7 @@ import threading
 from pydub import AudioSegment
 from pydub.playback import play
 import threading
+import time
 
 class AlarmManager:
 
@@ -38,18 +39,21 @@ class AlarmManager:
                     play(self.alarm_sound)
                 else:
                     self.status = False
+            time.sleep(0.1)
 
     def armAlarm(self):
         with self.lock:
             self.status = False
             self.armed = True
             self.detections = dict()
+            print('Alarm armed')
     
     def disarmAlarm(self):
         with self.lock:
             self.status = False
             self.armed = False
             self.detections = dict()
+            print('Alarm disarmed')
 
     def update_detections(self, node_id, detection):
         with self.lock:

@@ -1,0 +1,1 @@
+* sistemare reset dei nodi

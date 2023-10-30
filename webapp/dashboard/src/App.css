@@ -1,38 +1,129 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#alarm-container{
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+  position: relative;
+}
+
+#alarm-title{
+  font-size: 3rem;
+  text-align: center;
+}
+
+#alarm-central-led{
+  width: 6rem;
+  height: 6rem;
+  border-radius: 10rem;
+  border: 0.2rem solid black;
+  box-shadow: 0rem 0.4rem 0rem 0rem black;
+}
+
+#alarm-button-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 2rem;
+}
+
+.alarm-button{
+  display: flex;
+  border-radius: 0.5rem;
+  background-color: cadetblue;
+  padding: 1rem;
+  box-sizing: border-box;
+  margin: 0.5rem 1rem;
+  cursor: pointer;
+  width: 10rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0rem 0.4rem 0rem 0rem black;
+}
+
+.alarm-button:active{
+  box-shadow: none;
+}
+
+.alarm-button-title{
+  font-size: 1rem;
   color: white;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
+#sensors-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sensor-card{
+  display: flex;
+  border-radius: 0.5rem;
+  background-color: rgb(95, 158, 160, 0.2);
+  padding: 1rem;
+  box-sizing: border-box;
+  margin: 1rem;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.sensor-data-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 5rem;
+}
+
+.sensor-data{
+  color: black;
+  font-size: 1rem;
+}
+
+.sensor-button{
+  display: flex;
+  background-color: cadetblue;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0rem 0.2rem 0rem 0rem black;
+}
+
+.sensor-button:active{
+  box-shadow: none;
+}
+
+.sensor-button-label{
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sensor-led{
+  display: flex;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 5rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+  box-shadow: 0rem 0.3rem 0rem 0rem black;
+}
+
+.sensor-led-label{
+  color: white;
+  font-size: 0.8rem;
 }
