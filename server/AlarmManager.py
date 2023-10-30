@@ -8,6 +8,7 @@ class AlarmManager:
     instance = None
 
     def __init__(self):
+        self.armed = False
         self.status = False
         self.detections = dict()
         self.lock = threading.Lock()
@@ -20,27 +21,40 @@ class AlarmManager:
         return AlarmManager.instance
     
     def get_status(self):
-        return self.status
+        return (self.armed, self.status)
 
     def alarm_player(self):
         while True:
-            if len(self.detections) > 0:
-                self.status = True
-                print()
-                print("SENSOR NODE ALERTED")
-                for node_id in self.detections:
-                    print(node_id)
-                print()
-                play(self.alarm_sound)
-            else:
-                self.status = False
+            with self.lock:
+                if not self.armed:
+                    continue
+                if len(self.detections) > 0:
+                    self.status = True
+                    print()
+                    print("SENSOR NODE ALERTED")
+                    for node_id in self.detections:
+                        print(node_id)
+                    print()
+                    play(self.alarm_sound)
+                else:
+                    self.status = False
 
-    def reset(self):
+    def armAlarm(self):
         with self.lock:
+            self.status = False
+            self.armed = True
+            self.detections = dict()
+    
+    def disarmAlarm(self):
+        with self.lock:
+            self.status = False
+            self.armed = False
             self.detections = dict()
 
     def update_detections(self, node_id, detection):
         with self.lock:
+            if not self.armed:
+                return
             if detection:
                 self.detections[node_id] = None
             else:

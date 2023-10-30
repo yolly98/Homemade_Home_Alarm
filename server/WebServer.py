@@ -29,7 +29,7 @@ class WebServer:
 app = WebServer.get_instance().get_app()
 
 
-@app.post('/status')
+@app.post('/status_all')
 def post_status():
     if request.json is None:
         return {'error': 'No JSON request received'}, 500
@@ -37,7 +37,6 @@ def post_status():
     received_json = request.json
     print(f'[Web server] received get status')
     return {"status": 0, "body": json.dumps({'cmd': 'status'})}
-
 
 @app.post('/keep_alive')
 def post_keep_alive():
@@ -48,7 +47,7 @@ def post_keep_alive():
     print(f'[Web server] received {received_json}')
     return {"status": 0, "body": json.dumps({'cmd': 'keep_alive'})}
 
-@app.post('/alarm_on')
+@app.post('/alarm_on_all')
 def post_alarm_on():
     if request.json is None:
         return {'error': 'No JSON request received'}, 500
@@ -57,7 +56,7 @@ def post_alarm_on():
     print(f'[Web server] received {received_json}')
     return {"status": 0, "body": json.dumps({'cmd': 'alarm_on'})}
 
-@app.post('/alarm_off')
+@app.post('/alarm_off_all')
 def post_alarm_off():
     if request.json is None:
         return {'error': 'No JSON request received'}, 500
@@ -66,7 +65,7 @@ def post_alarm_off():
     print(f'[Web server] received {received_json}')
     return {"status": 0, "body": json.dumps({'cmd': 'alarm_off'})}
 
-@app.post('/reset')
+@app.post('/reset_all')
 def post_reset():
     if request.json is None:
         return {'error': 'No JSON request received'}, 500
@@ -75,11 +74,3 @@ def post_reset():
     print(f'[Web server] received {received_json}')
     return {"status": 0, "body": json.dumps({'cmd': 'reset'})}
 
-@app.post('/send')
-def post_send():
-    if request.json is None:
-        return {'error': 'No JSON request received'}, 500
-
-    received_json = request.json
-    print(f'[Web server] received {received_json}')
-    return {"status": 0, "body": json.dumps({'cmd': 'send'})}

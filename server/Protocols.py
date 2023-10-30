@@ -7,14 +7,14 @@ class Protocols:
         pass
 
     def alarm_on():
-        AlarmManager.get_instance().reset()
+        AlarmManager.get_instance().armAlarm()
         nodes = Cache.get_instance().get_nodes()
         for node_id in nodes:
             node = nodes[node_id]
             UDPServer.send('ON', node['addr'], node['port'])
 
     def alarm_off():
-        AlarmManager.get_instance().reset()
+        AlarmManager.get_instance().disarmAlarm()
         nodes = Cache.get_instance().get_nodes()
         for node_id in nodes:
             node = nodes[node_id]
@@ -50,10 +50,15 @@ class Protocols:
 
     def status():
         status = dict()
-        if AlarmManager.get_instance().get_status():
+        isArmed, alarmStatus = AlarmManager.get_instance().get_status()
+        if isArmed:
             status['alarm'] = 'armed'
         else:
             status['alarm'] = 'disarmed'
+        if alarmStatus:
+            status['alerted'] = 'yes'
+        else:
+            status['alerted'] = 'no'
         status['nodes'] = Cache.get_instance().get_nodes()
         return status
     

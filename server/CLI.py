@@ -45,6 +45,7 @@ class CLI:
                 status = Protocols.status()
                 print('----------------------------------')
                 print(f"alarm: {status['alarm']}")
+                print(f"alerted: {status['alerted']}")
                 if len(status['nodes']) == 0:
                     print('No sensor nodes connected')
                 else:

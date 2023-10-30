@@ -73,6 +73,7 @@ class TelegramBotManager:
         elif update_obj.message.text == 'STATUS':
             status = Protocols.status()
             self.send_message_to_telegram(f"Alarm: {status['alarm']}")
+            self.send_message_to_telegram(f"Alerted: {status['alerted']}")
             nodes = status['nodes']
             if len(nodes) == 0:
                 self.send_message_to_telegram('No nodes connected')
