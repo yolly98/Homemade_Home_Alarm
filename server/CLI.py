@@ -18,7 +18,8 @@ class CLI:
         print('insert a command to interact with the system')
         print('COMMANDS:')
         print('- help')
-        print('- send [room] [node_id] [cmd]')
+        print('- send [room] [id] [cmd]')
+        print('- remove [room] [id]')
         print('- status')
         print('- exit')
         print('- alarm [on/off]')
@@ -72,7 +73,7 @@ class CLI:
             # ----- SEND COMMAND ----- #
             elif cmd[0] == 'send':
                 if len(cmd) < 4:
-                    print('wrong command: send [room] [node_id] [cmd]')
+                    print('wrong command: send [room] [id] [cmd]')
                     continue
                 node_id = f'/{cmd[1]}/{cmd[2]}'
                 res = Protocols.send_cmd(node_id, cmd[3])
@@ -90,6 +91,16 @@ class CLI:
                 res = Protocols.reset()
                 if not res:
                     print('No sensor nodes connected')
+
+            # ----- REMOVE NODE ---- #
+            elif cmd[0] == 'remove':
+                if len(cmd) < 3:
+                    print('wrong command: remove [room] [id]')
+                    continue
+                node_id = f'/{cmd[1]}/{cmd[2]}'
+                res = Protocols.remove(node_id)
+                if not res:
+                    print("Node doesn't exists")
 
 
             

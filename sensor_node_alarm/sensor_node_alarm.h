@@ -2,8 +2,16 @@
 #define HEADER
 
 #include <SPI.h>
-#include <WiFiNINA.h>
-#include <WiFiUdp.h>
+
+#define WIFI_NINA
+#ifdef WIFI_NINA
+  #include <WiFiNINA.h>
+  #include <WiFiUdp.h>
+#endif
+#ifdef WIFI_ESP32S3
+  #include <WiFiS3.h>
+#endif
+
 #include "secrets.h"
 
 #define MOVEMENT_SENSOR 2

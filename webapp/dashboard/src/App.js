@@ -94,6 +94,7 @@ class App extends Component{
                     <div className='sensor-button'><label className='sensor-button-label'>ALARM ON</label></div>
                     <div className='sensor-button'><label className='sensor-button-label'>ALARM OFF</label></div>
                     <div className='sensor-button'><label className='sensor-button-label'>ALARM RESET</label></div>
+                    <div className='sensor-button'><label className='sensor-button-label'>REMOVE</label></div>
                   </div>
                   <div className='sensor-led-container'>
                     <div className='sensor-led' style={{backgroundColor: status_led}}>

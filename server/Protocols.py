@@ -56,3 +56,6 @@ class Protocols:
             status['alarm'] = 'disarmed'
         status['nodes'] = Cache.get_instance().get_nodes()
         return status
+    
+    def remove(node_id):
+        return Cache.get_instance().remove_node(node_id)
