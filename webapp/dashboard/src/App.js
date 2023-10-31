@@ -5,7 +5,6 @@ import './App.css';
 class App extends Component{
 
   state = {
-    server_url: window.SERVER_URL,
     commands: [
       {
         title: 'ALARM ON',
@@ -65,7 +64,7 @@ class App extends Component{
         node_id: node_id
     };
 
-    fetch(this.state.server_url + endpoint, {
+    fetch(window.SERVER_URL + endpoint, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
