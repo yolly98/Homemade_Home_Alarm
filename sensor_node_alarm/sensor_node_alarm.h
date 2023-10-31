@@ -19,12 +19,12 @@
 #define RELAY 4
 #define RESET 5
 
-#define SENSOR_ID "24"
-#define ROOM  "hall"
+#define SENSOR_ID "1"
+#define ROOM  "bathroom"
 #define WIFI_SSID MY_WIFI_SSID
 #define WIFI_PASSW MY_WIFI_PASSW
 #define LOCAL_PORT 2390
-#define SERVER_IP "192.168.178.32"
+#define SERVER_IP "192.168.178.33"
 #define SERVER_PORT 2390
 #define COMMUNICATION_ATTEMPTS 3
 #define SENDING_DELAY 1000

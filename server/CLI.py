@@ -40,7 +40,7 @@ class CLI:
 
             # ----- HELP COMMAND ----- #
             if cmd[0] == 'help':
-                self.init()
+                CLI.init()
             elif cmd[0] == 'status':
                 status = Protocols.status()
                 print('----------------------------------')

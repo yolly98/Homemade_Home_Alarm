@@ -5,7 +5,7 @@ import './App.css';
 class App extends Component{
 
   state = {
-    server_url: "http://192.168.178.32:9000",
+    server_url: window.SERVER_URL,
     commands: [
       {
         title: 'ALARM ON',
