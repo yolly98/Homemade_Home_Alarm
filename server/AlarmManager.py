@@ -26,6 +26,7 @@ class AlarmManager:
 
     def alarm_player(self):
         while True:
+            time.sleep(0.1)
             with self.lock:
                 if not self.armed:
                     continue
@@ -39,7 +40,6 @@ class AlarmManager:
                     play(self.alarm_sound)
                 else:
                     self.status = False
-            time.sleep(0.1)
 
     def armAlarm(self):
         with self.lock:
