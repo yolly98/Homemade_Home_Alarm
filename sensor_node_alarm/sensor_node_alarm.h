@@ -20,7 +20,7 @@
 #define RESET 5
 
 #define SENSOR_ID "1"
-#define ROOM  "bathroom"
+#define ROOM  "hall"
 #define WIFI_SSID MY_WIFI_SSID
 #define WIFI_PASSW MY_WIFI_PASSW
 #define LOCAL_PORT 2390

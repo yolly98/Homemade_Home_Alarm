@@ -15,7 +15,7 @@ void setup(){
   
   // MODULES INIZIALIZATION
   pinMode(RESET, OUTPUT);
-  digitalWrite(RESET, HIGH);
+  digitalWrite(RESET, LOW);
 
   Serial.begin(9600);
   
@@ -101,7 +101,7 @@ void loop(){
         sprintf(packet, "/%s/%s/RESET",ROOM, SENSOR_ID);
         communicationModule.sendPacket(packet, ip, (uint16_t)SERVER_PORT);
         delay(100);
-        digitalWrite(RESET, LOW);
+        digitalWrite(RESET, HIGH);
       }
       else if(strcmp(receivedPacket, "ON") == 0){
         sprintf(packet, "/%s/%s/ON",ROOM, SENSOR_ID);
