@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-11-07T16:25:52.584Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="cyWKe5FLj-jgfCN-OYbs" version="22.0.2" type="device">
+<mxfile host="Electron" modified="2023-11-08T10:09:40.018Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="DlrX05NKg_bqT-L-9Y2F" version="22.0.2" type="device">
   <diagram name="Pagina-1" id="H0xSmqveMUSmUJ5dfSGS">
     <mxGraphModel dx="1418" dy="828" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -208,7 +208,7 @@
         <mxCell id="F7FlZ5ksE0jWtTMACyOJ-17" value="NPN TRANSISTOR" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="80" y="460" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="F7FlZ5ksE0jWtTMACyOJ-18" value="Arduino NANO RP2040 Connect / ESP32" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="F7FlZ5ksE0jWtTMACyOJ-18" value="Arduino NANO RP2040 Connect" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="180" y="704.5" width="160" height="30" as="geometry" />
         </mxCell>
       </root>
