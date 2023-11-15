@@ -35,7 +35,10 @@ class CLI:
     
     def listen(self):
         while True:
-            cmd = input("> ")
+            try:
+                cmd = input("> ")
+            except:
+                break
             cmd = cmd.split(' ')
 
             # ----- HELP COMMAND ----- #
