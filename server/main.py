@@ -8,11 +8,11 @@ from TelegramBotManager import TelegramBotManager
 from WebServer import WebServer
 
 PORT = 2390
-KEEP_ALIVE_TIMER = 60 # 1 minute
+KEEP_ALIVE_TIMER = 60 * 5 # 5 minutes
 
 def keep_alive_timer():
     while True:
-        time.sleep(60)
+        time.sleep(KEEP_ALIVE_TIMER)
         nodes = Cache.get_instance().get_nodes()
         if len(nodes) == 0:
             continue

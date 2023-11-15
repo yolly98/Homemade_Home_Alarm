@@ -1,1 +1,11 @@
-{}
+{
+    "/test/1": {
+        "addr": "127.0.0.1",
+        "port": 2920,
+        "room": "test",
+        "id": "1",
+        "status": "alive",
+        "alarm": "off",
+        "detection": false
+    }
+}
