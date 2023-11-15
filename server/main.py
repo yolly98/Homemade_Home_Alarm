@@ -6,6 +6,7 @@ import threading
 import time
 from TelegramBotManager import TelegramBotManager
 from WebServer import WebServer
+from Protocols import Protocols
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 * 5 # 5 minutes
@@ -13,15 +14,7 @@ KEEP_ALIVE_TIMER = 60 * 5 # 5 minutes
 def keep_alive_timer():
     while True:
         time.sleep(KEEP_ALIVE_TIMER)
-        nodes = Cache.get_instance().get_nodes()
-        if len(nodes) == 0:
-            continue
-        for node_id in nodes:
-            node = nodes[node_id]
-            node['status'] = 'dead'
-            Cache.get_instance().add_node(node_id, node) 
-            UDPServer.send('STATUS', node['addr'], node['port'])
-
+        Protocols.keep_alive()
 
 def msg_from_node_handler():
     while True:

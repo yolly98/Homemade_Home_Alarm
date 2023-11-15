@@ -35,6 +35,8 @@ class Protocols:
         else:
             for node_id in nodes:
                 node = nodes[node_id]
+                node['status'] = 'dead'
+                Cache.get_instance().add_node(node_id, node) 
                 UDPServer.send('STATUS', node['addr'], node['port'])
         return True
 

@@ -4,8 +4,8 @@
         "port": 2920,
         "room": "test",
         "id": "1",
-        "status": "alive",
-        "alarm": "off",
+        "status": "dead",
+        "alarm": "on",
         "detection": false
     }
 }
