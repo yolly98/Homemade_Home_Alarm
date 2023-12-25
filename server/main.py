@@ -10,11 +10,17 @@ from Protocols import Protocols
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 * 5 # 5 minutes
+RESET_TIMER = 60 * 60 * 6 # 6 hours
 
 def keep_alive_timer():
     while True:
         time.sleep(KEEP_ALIVE_TIMER)
         Protocols.keep_alive()
+
+def rest_timer():
+    while True:
+        time.sleep(RESET_TIMER)
+        Protocols.reset()
 
 def msg_from_node_handler():
     while True:
@@ -27,8 +33,12 @@ def msg_from_node_handler():
         cmd = msg[4]
         node_id = f'/{room}/{id}'
         if cmd == 'INIT':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': alarm, 'detection': False}
             Cache.get_instance().add_node(node_id, node)
+            alarm_is_armed, detection = AlarmManager.get_instance().get_status()
+            if alarm_is_armed:
+                Protocols.send_cmd(node_id, 'ON')
+            
         elif cmd == 'ON':
             node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
@@ -56,6 +66,7 @@ if __name__ == '__main__':
     cli_manager_thread = threading.Thread(target=CLI.get_instance().listen)
     alarm_manager_thread = threading.Thread(target=AlarmManager.get_instance().alarm_player)
     keep_alive_thread = threading.Thread(target=keep_alive_timer)
+    reset_thread = threading.Thread(target=rest_timer)
     telegram_bot_manager = threading.Thread(target=TelegramBotManager.get_instance().telegram_bot())
 
     CLI.init()
@@ -65,6 +76,7 @@ if __name__ == '__main__':
     cli_manager_thread.start()
     alarm_manager_thread.start()
     keep_alive_thread.start()
+    reset_thread.start()
     telegram_bot_manager.start()
 
     WebServer.get_instance().listen("0.0.0.0", "9000")
@@ -74,4 +86,5 @@ if __name__ == '__main__':
     cli_manager_thread.join()
     alarm_manager_thread.join()
     keep_alive_thread.join()
+    reset_thread.join()
     telegram_bot_manager.join()
