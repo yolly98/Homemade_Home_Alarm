@@ -20,6 +20,7 @@ def keep_alive_timer():
 def rest_timer():
     while True:
         time.sleep(RESET_TIMER)
+        TelegramBotManager.get_instance().send_message_to_telegram(f'reset protocol started')
         Protocols.reset()
 
 def msg_from_node_handler():
@@ -33,7 +34,7 @@ def msg_from_node_handler():
         cmd = msg[4]
         node_id = f'/{room}/{id}'
         if cmd == 'INIT':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': alarm, 'detection': False}
+            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
             alarm_is_armed, detection = AlarmManager.get_instance().get_status()
             if alarm_is_armed:
