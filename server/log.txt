@@ -1,0 +1,18 @@
+[24/01/07 23:28:16] ( + ) Server initialization started
+[24/01/07 23:28:16] ( + ) Server threads started
+[24/01/07 23:28:20] ( $ ) Protocol Started: STATUS
+[24/01/07 23:28:24] ( $ ) Protocol Started: KEEP ALIVE
+[24/01/07 23:28:24] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
+[24/01/07 23:28:25] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
+[24/01/07 23:28:25] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
+[24/01/07 23:28:59] ( $ ) Protocol Started: RESET
+[24/01/07 23:28:59] (-->) Sent UDP message 'RESET' to (192.168.178.48, 2390)
+[24/01/07 23:28:59] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/RESET
+[24/01/07 23:28:59] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
+[24/01/07 23:29:25] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/INIT
+[24/01/07 23:29:25] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
+[24/01/07 23:29:40] ( $ ) Protocol Started: STATUS
+[24/01/07 23:29:48] ( $ ) Protocol Started: KEEP ALIVE
+[24/01/07 23:29:48] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
+[24/01/07 23:29:48] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
+[24/01/07 23:29:48] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)

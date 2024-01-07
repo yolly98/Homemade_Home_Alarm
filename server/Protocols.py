@@ -1,12 +1,14 @@
 from AlarmManager import AlarmManager
 from Cache import Cache
 from UDPServer import UDPServer
+from Log import Log
 
 class Protocols: 
     def __init__(self):
         pass
 
     def alarm_on():
+        Log.get_instance().print('cmd', 'Protocol Started: ALARM ON')
         AlarmManager.get_instance().armAlarm()
         nodes = Cache.get_instance().get_nodes()
         for node_id in nodes:
@@ -14,6 +16,7 @@ class Protocols:
             UDPServer.send('ON', node['addr'], node['port'])
 
     def alarm_off():
+        Log.get_instance().print('cmd', 'Protocol Started: ALARM OFF')
         AlarmManager.get_instance().disarmAlarm()
         nodes = Cache.get_instance().get_nodes()
         for node_id in nodes:
@@ -21,6 +24,7 @@ class Protocols:
             UDPServer.send('OFF', node['addr'], node['port'])
 
     def send_cmd(node_id, cmd):
+        Log.get_instance().print('cmd', f'Protocol Started: SEND {cmd} to {node_id}')
         node = Cache.get_instance().get_node(node_id)
         if node is None:
             return False
@@ -29,6 +33,7 @@ class Protocols:
         return True
 
     def keep_alive():
+        Log.get_instance().print('cmd', 'Protocol Started: KEEP ALIVE')
         nodes = Cache.get_instance().get_nodes()
         if len(nodes) == 0:
             return False
@@ -41,6 +46,7 @@ class Protocols:
         return True
 
     def reset():
+        Log.get_instance().print('cmd', 'Protocol Started: RESET')
         nodes = Cache.get_instance().get_nodes()
         if len(nodes) == 0:
             return False
@@ -51,6 +57,7 @@ class Protocols:
         return True
 
     def status():
+        Log.get_instance().print('cmd', 'Protocol Started: STATUS')
         status = dict()
         isArmed, alarmStatus = AlarmManager.get_instance().get_status()
         if isArmed:
@@ -65,4 +72,5 @@ class Protocols:
         return status
     
     def remove(node_id):
+        Log.get_instance().print('cmd', f'Protocol Started: REMOVE {node_id}')
         return Cache.get_instance().remove_node(node_id)

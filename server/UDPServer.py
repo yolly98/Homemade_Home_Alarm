@@ -1,5 +1,6 @@
 import socket
 import queue
+from Log import Log
 
 class UDPServer:
 
@@ -27,11 +28,12 @@ class UDPServer:
         while True:
             data, addr = self.udp_socket.recvfrom(self.local_port)
             received_msg = data.decode('utf-8')
-            print(f"\nReceived UDP message from {addr}: {received_msg}")
+            Log.get_instance().print('recv', f"Received UDP message from {addr}: {received_msg}")
             self.msgQueue.put(f'{addr[0]}/{addr[1]}{received_msg}')
             UDPServer.send('ACK', addr[0], int(addr[1]))
             
     def send(msg, ip, port):
+        Log.get_instance().print('send', f"Sent UDP message '{msg}' to ({ip}, {port})")
         tmp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         tmp_socket.sendto(msg.encode('utf-8'), (ip, port))
         tmp_socket.close()

@@ -7,6 +7,7 @@ import time
 from TelegramBotManager import TelegramBotManager
 from WebServer import WebServer
 from Protocols import Protocols
+from Log import Log
 
 PORT = 2390
 KEEP_ALIVE_TIMER = 60 * 5 # 5 minutes
@@ -60,6 +61,7 @@ def msg_from_node_handler():
 
 if __name__ == '__main__':
     
+    Log.get_instance().print('success', 'Server initialization started')
     UDPServer.get_instance().init(PORT)
 
     udp_listener_thread = threading.Thread(target=UDPServer.get_instance().listen)
@@ -79,6 +81,8 @@ if __name__ == '__main__':
     keep_alive_thread.start()
     reset_thread.start()
     telegram_bot_manager.start()
+
+    Log.get_instance().print('success', 'Server threads started')
 
     WebServer.get_instance().listen("0.0.0.0", "9000")
 

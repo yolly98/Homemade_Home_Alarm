@@ -9,7 +9,7 @@ USER_FILE = "telegram_user_file.txt"
 BOT_FILE = "telegram_bot_file.txt"
 START = 0
 COMMAND = 1
-BOT_ENABLE = False
+BOT_ENABLE = True
 
 class TelegramBotManager:
 
