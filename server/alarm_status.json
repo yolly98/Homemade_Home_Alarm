@@ -1,11 +1,11 @@
 {
-    "/test/1": {
-        "addr": "127.0.0.1",
-        "port": 2920,
-        "room": "test",
+    "/default/1": {
+        "addr": "192.168.178.48",
+        "port": 2390,
+        "room": "default",
         "id": "1",
-        "status": "dead",
-        "alarm": "on",
+        "status": "alive",
+        "alarm": "off",
         "detection": false
     }
 }

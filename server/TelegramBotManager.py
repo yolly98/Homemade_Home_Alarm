@@ -9,6 +9,7 @@ USER_FILE = "telegram_user_file.txt"
 BOT_FILE = "telegram_bot_file.txt"
 START = 0
 COMMAND = 1
+BOT_ENABLE = False
 
 class TelegramBotManager:
 
@@ -35,6 +36,8 @@ class TelegramBotManager:
         return TelegramBotManager.instance
     
     def start(self, update_obj, context):
+        if BOT_ENABLE == False:
+            return
         #print("--- START state ---")
         update_obj.message.reply_text("Select a command",
             reply_markup=telegram.ReplyKeyboardMarkup([['ALARM ON', 'ALARM OFF'],[ 'STATUS', "KEEP ALIVE"], ["RESET", "END BOT"]], one_time_keyboard=True)
@@ -42,6 +45,8 @@ class TelegramBotManager:
         return COMMAND
     
     def send_message_to_telegram(self, text):
+        if BOT_ENABLE == False:
+            return
         url = f'https://api.telegram.org/bot{self.bot_token}/sendMessage'
 
         params = {
@@ -53,6 +58,8 @@ class TelegramBotManager:
         resp.raise_for_status()
 
     def command(self, update_obj, context):
+        if BOT_ENABLE == False:
+            return
         #authentication
         user = update_obj.message.from_user['id']
         if self.authorized_user != user:
@@ -96,6 +103,8 @@ class TelegramBotManager:
             return telegram.ext.ConversationHandler.END
         
     def telegram_bot(self):
+        if BOT_ENABLE == False:
+            return
         filter = re.compile(r'^(ALARM ON|ALARM OFF|STATUS|KEEP ALIVE|RESET|END BOT)$', re.IGNORECASE)
 
         handler = telegram.ext.ConversationHandler(
