@@ -16,3 +16,7 @@
 [24/01/07 23:29:48] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
 [24/01/07 23:29:48] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
 [24/01/07 23:29:48] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
+[24/01/07 23:33:16] ( $ ) Protocol Started: KEEP ALIVE
+[24/01/07 23:33:16] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
+[24/01/07 23:33:16] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
+[24/01/07 23:33:16] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)

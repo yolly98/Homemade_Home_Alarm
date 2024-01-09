@@ -10,9 +10,10 @@
 #define EXT_LED 3
 #define RELAY 4
 #define RESET 5
+#define SOLO_MODE_PIN 6
 
 #define SENSOR_ID "1"
-#define ROOM  "bathroom"
+#define ROOM  "default"
 #define WIFI_SSID MY_WIFI_SSID
 #define WIFI_PASSW MY_WIFI_PASSW
 #define LOCAL_PORT 2390
@@ -20,10 +21,10 @@
 #define SERVER_PORT 2390
 #define COMMUNICATION_ATTEMPTS 3
 #define SENDING_DELAY 1000
-#define ACTIVATION_DELAY 30000
+#define ACTIVATION_DELAY 1000 * 30 // 30 seconds
 #define EXT_LED_BLINK_INTERVAL 500
 #define PACKET_SIZE 50
-#define KEEP_ALIVE_TIMER 1000 * 60 * 10
+#define KEEP_ALIVE_TIMER 1000 * 60 * 10 // 10 minutes
 #define SOLO_MODE 0
 #define NET_MODE 1
 
@@ -47,6 +48,7 @@ class CommunicationModule{
 
   public:
     bool initializeUDP();
+    void connectToRouter();
     void sendPacket(char* data, IPAddress ip, uint16_t port);
     bool receivePacket(char* data, IPAddress* ip, uint16_t* port);
 };

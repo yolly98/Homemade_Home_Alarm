@@ -15,6 +15,7 @@ void setup(){
   
   // MODULES INIZIALIZATION
   pinMode(RESET, OUTPUT);
+  pinMode(SOLO_MODE_PIN, INPUT);
   digitalWrite(RESET, LOW);
 
   Serial.begin(9600);
@@ -22,42 +23,36 @@ void setup(){
   ledStatusModule.init();
   movementSensor.init();
   ledStatusModule.set(Colors::White);
-  communicationModule.initializeUDP();
-
-  delay(1000);
-
-  char packet[PACKET_SIZE];
-  sprintf(packet, "/%s/%s/INIT",ROOM, SENSOR_ID);
-
-  // INITIALIZATION PROTOCOL
-  // The sensor node attempts to contact the server to register itself in the network.
-  // If it doesn't receve any response, it will work in SOLO_MODE, otherwise in NET_MODE
-  int max_attempts = COMMUNICATION_ATTEMPTS;
-  while(max_attempts > 0){
-    communicationModule.sendPacket(packet, (IPAddress)SERVER_IP, (uint16_t)SERVER_PORT);
-    delay(SENDING_DELAY);
-
-    IPAddress ip;
-    uint16_t port;
-    char receivedPacket[PACKET_SIZE];
-    if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
-
-      if(strcmp(receivedPacket, "ACK") == 0){
-        MODE = NET_MODE;
-        ledStatusModule.set(Colors::Blue);
-        keep_alive_timer = millis();
-        break;
-      } else{
-        ledStatusModule.set(Colors::Red);
-        while(true){delay(1000);};
-      }
-    }
-    max_attempts--;
-  }
-  if(MODE == SOLO_MODE){
+  if(digitalRead(SOLO_MODE_PIN) == HIGH){
     // In SOLO_MODE the alarm is always activated
     ledStatusModule.set(Colors::Green);
     movementSensor.activateAlarm();
+  }
+  else{
+    communicationModule.initializeUDP();
+
+    char packet[PACKET_SIZE];
+    sprintf(packet, "/%s/%s/INIT",ROOM, SENSOR_ID);
+
+    // INITIALIZATION PROTOCOL
+    // The sensor node attempts to contact the server to register itself in the network.
+    // If it doesn't receve any response, it will try again
+    while(true){
+      communicationModule.sendPacket(packet, (IPAddress)SERVER_IP, (uint16_t)SERVER_PORT);
+      delay(SENDING_DELAY);
+
+      IPAddress ip;
+      uint16_t port;
+      char receivedPacket[PACKET_SIZE];
+      if (communicationModule.receivePacket(receivedPacket, &ip, &port)){
+        if(strcmp(receivedPacket, "ACK") == 0){
+          MODE = NET_MODE;
+          ledStatusModule.set(Colors::Blue);
+          keep_alive_timer = millis();
+          break;
+        }
+      }
+    }
   }
 
 }

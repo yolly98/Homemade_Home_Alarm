@@ -17,6 +17,18 @@ bool CommunicationModule::initializeUDP(){
   }
 
   // attempt to connect to Wifi network:
+  connectToRouter();
+
+  Serial.println("Connected to wifi");
+  printWifiStatus();
+  Udp.begin(LOCAL_PORT);
+  delay(1000);
+  
+  return true;
+} 
+
+void CommunicationModule::connectToRouter(){
+  
   while (status != WL_CONNECTED) {
 
     Serial.print("Attempting to connect to SSID: ");
@@ -25,34 +37,12 @@ bool CommunicationModule::initializeUDP(){
     status = WiFi.begin(WIFI_SSID, WIFI_PASSW);
     delay(10000);
   } 
-
-  Serial.println("Connected to wifi");
-  printWifiStatus();
-  Udp.begin(LOCAL_PORT);
-  return true;
-} 
-
-void CommunicationModule::printWifiStatus(){
-
-  // print the SSID of the network you're attached to:
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-
-  // print your board's IP address:
-  IPAddress ip = WiFi.localIP();
-  Serial.print("IP Address: ");
-  Serial.println(ip);
-
-  // print the received signal strength:
-  long rssi = WiFi.RSSI();
-  Serial.print("signal strength (RSSI):");
-  Serial.print(rssi);
-  Serial.println(" dBm");
 }
 
 
 void CommunicationModule::sendPacket(char* data, IPAddress ip, uint16_t port){
 
+    connectToRouter(); // if the connection is lost, the node tries to connect again
     Udp.beginPacket(ip, port);
     Udp.write(data);
     Udp.endPacket();
@@ -61,6 +51,7 @@ void CommunicationModule::sendPacket(char* data, IPAddress ip, uint16_t port){
 
 bool CommunicationModule::receivePacket(char* packetBuffer, IPAddress* ip, uint16_t* port){
 
+  connectToRouter(); // if the connection is lost, the node tries to connect again
   int packetSize = Udp.parsePacket();
 
   if (packetSize) {
@@ -87,5 +78,22 @@ bool CommunicationModule::receivePacket(char* packetBuffer, IPAddress* ip, uint1
     return false;
 }
 
+void CommunicationModule::printWifiStatus(){
+
+  // print the SSID of the network you're attached to:
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  // print your board's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+}
 
 #endif
