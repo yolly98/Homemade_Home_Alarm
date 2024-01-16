@@ -20,7 +20,7 @@ bool CommunicationModule::initializeUDP(){
   connectToRouter();
 
   Serial.println("Connected to wifi");
-  printWifiStatus();
+  // printWifiStatus();
   Udp.begin(LOCAL_PORT);
   delay(1000);
   
@@ -29,12 +29,12 @@ bool CommunicationModule::initializeUDP(){
 
 void CommunicationModule::connectToRouter(){
   
-  while (status != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {
 
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(WIFI_SSID);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.begin(WIFI_SSID, WIFI_PASSW);
+    WiFi.begin(WIFI_SSID, WIFI_PASSW);
     delay(10000);
   } 
 }

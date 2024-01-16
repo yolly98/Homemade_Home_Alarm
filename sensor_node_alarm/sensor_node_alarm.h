@@ -43,7 +43,6 @@ class LedStatusModule{
 class CommunicationModule{
 
   WiFiUDP Udp;
-  int status;
   void printWifiStatus();
 
   public:
