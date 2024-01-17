@@ -89,6 +89,6 @@ class Protocols:
     def exit():
         Log.get_instance().print('cmd', 'Protocol Started: EXIT')
         try:
-            os.kill(os.getpid(), signal.SIGINT)
+            os.kill(os.getpid(), signal.SIGTERM)
         except:
             pass
