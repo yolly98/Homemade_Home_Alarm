@@ -40,7 +40,7 @@ class TelegramBotManager:
             return
         #print("--- START state ---")
         update_obj.message.reply_text("Select a command",
-            reply_markup=telegram.ReplyKeyboardMarkup([['ALARM ON', 'ALARM OFF'],[ 'STATUS', "KEEP ALIVE"], ["RESET", "END BOT"]], one_time_keyboard=True)
+            reply_markup=telegram.ReplyKeyboardMarkup([['ALARM ON', 'ALARM OFF'],[ 'STATUS', "KEEP ALIVE"], ["RESET", "EXIT"]], one_time_keyboard=True)
         )
         return COMMAND
     
@@ -98,14 +98,18 @@ class TelegramBotManager:
             Protocols.reset()
             self.send_message_to_telegram('RESET protocol started')
 
+        elif update_obj.message.text == 'EXIT':
+            self.send_message_to_telegram('EXIT protocol started')
+            Protocols.exit()
+        '''
         elif update_obj.message.text == 'END BOT':
             self.send_message_to_telegram('Telegram bot disabled (enter "/start" to restart it)')
             return telegram.ext.ConversationHandler.END
-        
+        '''
     def telegram_bot(self):
         if BOT_ENABLE == False:
             return
-        filter = re.compile(r'^(ALARM ON|ALARM OFF|STATUS|KEEP ALIVE|RESET|END BOT)$', re.IGNORECASE)
+        filter = re.compile(r'^(ALARM ON|ALARM OFF|STATUS|KEEP ALIVE|RESET|EXIT)$', re.IGNORECASE)
 
         handler = telegram.ext.ConversationHandler(
             entry_points=[telegram.ext.CommandHandler('start', self.start)],

@@ -1,15 +1,3 @@
-[24/01/17 21:24:35] ( + ) Server initialization started
-[24/01/17 21:24:35] ( + ) Server threads started
-[24/01/17 21:28:46] ( $ ) Protocol Started: ALIAS
-[24/01/17 21:28:59] ( $ ) Protocol Started: STATUS
-[24/01/17 21:29:15] (<--) Received UDP message from ('127.0.0.1', 2920): /default/10/DETECTED
-[24/01/17 21:29:15] (-->) Sent UDP message 'ACK' to (127.0.0.1, 2920)
-[24/01/17 21:29:20] ( $ ) Protocol Started: STATUS
-[24/01/17 21:29:28] (<--) Received UDP message from ('127.0.0.1', 2920): /default/10/FREE
-[24/01/17 21:29:28] (-->) Sent UDP message 'ACK' to (127.0.0.1, 2920)
-[24/01/17 21:29:35] ( $ ) Protocol Started: KEEP ALIVE
-[24/01/17 21:29:35] (-->) Sent UDP message 'STATUS' to (127.0.0.1, 2920)
-[24/01/17 21:29:35] (-->) Sent UDP message 'STATUS' to (127.0.0.1, 2920)
-[24/01/17 21:29:45] ( $ ) Protocol Started: STATUS
-[24/01/17 21:30:23] ( $ ) Protocol Started: ALIAS
-[24/01/17 21:30:36] ( $ ) Protocol Started: STATUS
+[24/01/17 21:40:56] ( + ) Server initialization started
+[24/01/17 21:40:57] ( + ) Server threads started
+[24/01/17 21:41:01] ( $ ) Protocol Started: EXIT

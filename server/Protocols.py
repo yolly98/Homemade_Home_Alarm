@@ -2,6 +2,8 @@ from AlarmManager import AlarmManager
 from Cache import Cache
 from UDPServer import UDPServer
 from Log import Log
+import os
+import signal
 
 class Protocols: 
     def __init__(self):
@@ -83,3 +85,10 @@ class Protocols:
         node['alias'] = alias
         Cache.get_instance().add_node(node_id, node)
         return True
+    
+    def exit():
+        Log.get_instance().print('cmd', 'Protocol Started: EXIT')
+        try:
+            os.kill(os.getpid(), signal.SIGINT)
+        except:
+            pass

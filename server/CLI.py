@@ -1,6 +1,4 @@
 from Protocols import Protocols
-import os
-import signal
 
 class CLI:
     instance = None
@@ -56,11 +54,7 @@ class CLI:
 
             # ----- EXIT COMMAND ----- #
             elif cmd[0] == 'exit':
-                print('Exit ...')
-                try:
-                    os.kill(os.getpid(), signal.SIGINT)
-                except:
-                    pass
+                Protocols.exit()
             
             # ----- ALRM ON/OFF COMMAND ----- #
             elif cmd[0] == 'alarm':
