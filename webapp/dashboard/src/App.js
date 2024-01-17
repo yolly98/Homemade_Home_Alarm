@@ -5,6 +5,10 @@ import './App.css';
 class App extends Component{
 
   state = {
+    alias_form: {
+      node_id: '',
+      alias: ''
+    },
     commands: [
       {
         title: 'ALARM ON',
@@ -42,6 +46,20 @@ class App extends Component{
     }, 5000);
   }
 
+  open_alias_form = (node) => {
+    let alias_form = this.state.alias_form;
+    alias_form.node_id = node.node_id;
+    alias_form.alias = node.alias;
+    this.setState({alias_form}, () => {document.getElementById('alarm-alias-container').style.display = 'flex';});
+  }
+
+  close_alias_form = () => {
+    let alias_form = this.state.alias_form;
+    alias_form.node_id = '';
+    alias_form.alias = '';
+    this.setState({alias_form}, () => {document.getElementById('alarm-alias-container').style.display = 'none';});
+  }
+
   handler = (msg) => {
     if (msg.request.resource == '/status'){
       let nodes = [];
@@ -56,13 +74,26 @@ class App extends Component{
       this.setState({nodes, central_led});
     }
   }
+
   request = (endpoint, type, node_id) => {
 
-    const requestData = {
-        resource: endpoint,
-        type: type,
-        node_id: node_id
-    };
+    let requestData = null;
+    if(endpoint == '/alias'){
+      let alias = document.getElementById('alarm-alias-input').value;
+      requestData = {
+          resource: endpoint,
+          type: type,
+          node_id: node_id,
+          alias: alias
+      };
+      this.close_alias_form();
+    }
+    else
+      requestData = {
+          resource: endpoint,
+          type: type,
+          node_id: node_id
+      };
 
     fetch(window.SERVER_URL + endpoint, {
         method: 'POST',
@@ -82,8 +113,20 @@ class App extends Component{
   }
 
   render(){
+
     return(
       <div id='alarm-container'>
+        <div id='alarm-alias-container' style={{'display': 'none'}}>
+          <input id='alarm-alias-input' type='text' placeholder={this.state.alias_form.alias}/>
+          <div id='alarm-alias-button-container'>
+            <div className='sensor-button' onClick={() => this.request('/alias', 'node', this.state.alias_form.node_id)}>
+              <label className='sensor-button-label'>CHANGE ALIAS</label>
+            </div>
+            <div className='sensor-button' onClick={() => this.close_alias_form()}>
+              <label className='sensor-button-label'>CANCEL</label>
+            </div>
+          </div>
+        </div>
         <label id='alarm-title'>ALARM DASHBOARD</label>
         <div id='alarm-central-led' style={{backgroundColor: this.state.central_led}}></div>
         <div id='alarm-button-container'>
@@ -108,7 +151,7 @@ class App extends Component{
                 else if(node.alarm == 'on' && !node.detection)
                   alarm_led = 'blue'
 
-                return <div key={node.node_id} className='sensor-card'>
+                return <div key={node.node_id} className='sensor-card' id={node.node_id}>
                   <div className='sensor-data-container'>
                     <label className='sensor-data'>Node id: {node.node_id}</label>
                     <label className='sensor-data'>Address: {node.addr}</label>
@@ -119,8 +162,10 @@ class App extends Component{
                     <div className='sensor-button' onClick={() => this.request('/alarm_off', 'node', node.node_id)}><label className='sensor-button-label'>ALARM OFF</label></div>
                     <div className='sensor-button' onClick={() => this.request('/reset', 'node', node.node_id)}><label className='sensor-button-label'>RESET</label></div>
                     <div className='sensor-button' onClick={() => this.request('/remove', 'node', node.node_id)}><label className='sensor-button-label'>REMOVE</label></div>
+                    <div className='sensor-button' onClick={() => this.open_alias_form(node)}><label className='sensor-button-label'>CHANGE ALIAS</label></div>
                   </div>
                   <div className='sensor-led-container'>
+                    <label className='sensor-name'>{node.alias}</label>
                     <div className='sensor-led' style={{backgroundColor: status_led}}>
                       <label className='sensor-led-label'>STATUS</label>
                     </div>

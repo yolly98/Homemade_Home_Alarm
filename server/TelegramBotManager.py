@@ -87,7 +87,7 @@ class TelegramBotManager:
             else:
                 for node_id in nodes:
                     node = nodes[node_id]
-                    msg = f'-------------- \n node_id: {node_id} \n address: ({node["addr"]}, {node["port"]}) \n status: {node["status"]} \n alarm: {node["alarm"]} \n detection: {node["detection"]} \n --------------'
+                    msg = f'-------------- \n alias: {node["alias"]} \n node_id: {node_id} \n address: ({node["addr"]}, {node["port"]}) \n status: {node["status"]} \n alarm: {node["alarm"]} \n detection: {node["detection"]} \n --------------'
                     self.send_message_to_telegram(msg)
 
         elif update_obj.message.text == 'KEEP ALIVE':
