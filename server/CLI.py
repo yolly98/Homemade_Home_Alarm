@@ -17,6 +17,7 @@ class CLI:
         print('- help')
         print('- send [room] [id] [cmd]')
         print('- remove [room] [id]')
+        print('- alias [room] [id] [alias]')
         print('- status')
         print('- exit')
         print('- alarm [on/off]')
@@ -100,6 +101,16 @@ class CLI:
                     continue
                 node_id = f'/{cmd[1]}/{cmd[2]}'
                 res = Protocols.remove(node_id)
+                if not res:
+                    print("Node doesn't exists")
+            
+            # ----- ASSIGN ALIAS TO NODE ---- #
+            elif cmd[0] == 'alias':
+                if len(cmd) < 4:
+                    print('wrong command: alias [room] [id] [alias]')
+                    continue
+                node_id = f'/{cmd[1]}/{cmd[2]}'
+                res = Protocols.assign_alias(node_id, cmd[3])
                 if not res:
                     print("Node doesn't exists")
 

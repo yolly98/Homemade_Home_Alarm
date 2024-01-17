@@ -1,22 +1,15 @@
-[24/01/07 23:28:16] ( + ) Server initialization started
-[24/01/07 23:28:16] ( + ) Server threads started
-[24/01/07 23:28:20] ( $ ) Protocol Started: STATUS
-[24/01/07 23:28:24] ( $ ) Protocol Started: KEEP ALIVE
-[24/01/07 23:28:24] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
-[24/01/07 23:28:25] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
-[24/01/07 23:28:25] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
-[24/01/07 23:28:59] ( $ ) Protocol Started: RESET
-[24/01/07 23:28:59] (-->) Sent UDP message 'RESET' to (192.168.178.48, 2390)
-[24/01/07 23:28:59] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/RESET
-[24/01/07 23:28:59] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
-[24/01/07 23:29:25] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/INIT
-[24/01/07 23:29:25] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
-[24/01/07 23:29:40] ( $ ) Protocol Started: STATUS
-[24/01/07 23:29:48] ( $ ) Protocol Started: KEEP ALIVE
-[24/01/07 23:29:48] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
-[24/01/07 23:29:48] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
-[24/01/07 23:29:48] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
-[24/01/07 23:33:16] ( $ ) Protocol Started: KEEP ALIVE
-[24/01/07 23:33:16] (-->) Sent UDP message 'STATUS' to (192.168.178.48, 2390)
-[24/01/07 23:33:16] (<--) Received UDP message from ('192.168.178.48', 2390): /default/1/OFF
-[24/01/07 23:33:16] (-->) Sent UDP message 'ACK' to (192.168.178.48, 2390)
+[24/01/17 21:24:35] ( + ) Server initialization started
+[24/01/17 21:24:35] ( + ) Server threads started
+[24/01/17 21:28:46] ( $ ) Protocol Started: ALIAS
+[24/01/17 21:28:59] ( $ ) Protocol Started: STATUS
+[24/01/17 21:29:15] (<--) Received UDP message from ('127.0.0.1', 2920): /default/10/DETECTED
+[24/01/17 21:29:15] (-->) Sent UDP message 'ACK' to (127.0.0.1, 2920)
+[24/01/17 21:29:20] ( $ ) Protocol Started: STATUS
+[24/01/17 21:29:28] (<--) Received UDP message from ('127.0.0.1', 2920): /default/10/FREE
+[24/01/17 21:29:28] (-->) Sent UDP message 'ACK' to (127.0.0.1, 2920)
+[24/01/17 21:29:35] ( $ ) Protocol Started: KEEP ALIVE
+[24/01/17 21:29:35] (-->) Sent UDP message 'STATUS' to (127.0.0.1, 2920)
+[24/01/17 21:29:35] (-->) Sent UDP message 'STATUS' to (127.0.0.1, 2920)
+[24/01/17 21:29:45] ( $ ) Protocol Started: STATUS
+[24/01/17 21:30:23] ( $ ) Protocol Started: ALIAS
+[24/01/17 21:30:36] ( $ ) Protocol Started: STATUS

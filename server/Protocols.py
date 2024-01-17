@@ -74,3 +74,12 @@ class Protocols:
     def remove(node_id):
         Log.get_instance().print('cmd', f'Protocol Started: REMOVE {node_id}')
         return Cache.get_instance().remove_node(node_id)
+    
+    def assign_alias(node_id, alias):
+        Log.get_instance().print('cmd', 'Protocol Started: ALIAS')
+        node = Cache.get_instance().get_node(node_id)
+        if node is None:
+            return False
+        node['alias'] = alias
+        Cache.get_instance().add_node(node_id, node)
+        return True

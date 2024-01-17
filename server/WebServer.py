@@ -114,3 +114,17 @@ def post_reset():
         status = -1
     return {"status": status, "body": json.dumps({'cmd': 'reset'})}
 
+@app.post('/alias')
+def post_alias():
+    if request.json is None:
+        return {'error': 'No JSON request received'}, 500
+
+    received_json = request.json
+    print(f'[Web server] received {received_json}')
+    status = 0
+    if (received_json['type'] == 'node') and ('node_id' in received_json) and ('alias' in received_json):
+        Protocols.assign_alias(received_json['node_id'], received_json['alias'])
+    else:
+        status = -1
+    return {"status": status, "body": json.dumps({'cmd': 'alias'})}
+

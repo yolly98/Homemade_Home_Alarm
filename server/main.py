@@ -27,6 +27,7 @@ def rest_timer():
 def msg_from_node_handler():
     while True:
         msg = UDPServer.get_instance().get_message()
+        print(msg)
         msg = msg.split('/')
         addr = msg[0]
         port = int(msg[1])
@@ -35,25 +36,47 @@ def msg_from_node_handler():
         cmd = msg[4]
         node_id = f'/{room}/{id}'
         if cmd == 'INIT':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
+            node = Cache.get_instance().get_node(node_id)
+            if node is None:
+                node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False, 'alias': 'None'}
+            else:
+                node['status'] = 'alive'
+                node['alarm'] = 'off'
+                node['detection'] = False
             Cache.get_instance().add_node(node_id, node)
             alarm_is_armed, detection = AlarmManager.get_instance().get_status()
             if alarm_is_armed:
                 Protocols.send_cmd(node_id, 'ON')
             
         elif cmd == 'ON':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
+            node = Cache.get_instance().get_node(node_id)
+            node['status'] = 'alive'
+            node['alarm'] = 'on'
+            node['detection'] = False
+            # node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
         elif cmd == 'OFF':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
+            node = Cache.get_instance().get_node(node_id)
+            node['status'] = 'alive'
+            node['alarm'] = 'off'
+            node['detection'] = False
+            # node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'off', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
         elif cmd == 'DETECTED':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': True}
+            node = Cache.get_instance().get_node(node_id)
+            node['status'] = 'alive'
+            node['alarm'] = 'on'
+            node['detection'] = True
+            # node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': True}
             Cache.get_instance().add_node(node_id, node)
             AlarmManager.get_instance().update_detections(node_id, True)
             TelegramBotManager.get_instance().send_message_to_telegram(f'[{node_id}] movement detected')
         elif cmd == 'FREE':
-            node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
+            node = Cache.get_instance().get_node(node_id)
+            node['status'] = 'alive'
+            node['alarm'] = 'on'
+            node['detection'] = False
+            # node = {'addr': addr, 'port': port, 'room': room, 'id': id, 'status': 'alive', 'alarm': 'on', 'detection': False}
             Cache.get_instance().add_node(node_id, node)
             AlarmManager.get_instance().update_detections(node_id, False)
             TelegramBotManager.get_instance().send_message_to_telegram(f'[{node_id}] no movement detected')

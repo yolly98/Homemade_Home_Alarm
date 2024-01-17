@@ -1,11 +1,22 @@
 {
-    "/default/1": {
-        "addr": "192.168.178.48",
-        "port": 2390,
+    "/default/10": {
+        "addr": "127.0.0.1",
+        "port": 2920,
         "room": "default",
-        "id": "1",
-        "status": "alive",
+        "id": "10",
+        "status": "dead",
+        "alarm": "on",
+        "detection": false,
+        "alias": "boh"
+    },
+    "/default/25": {
+        "addr": "127.0.0.1",
+        "port": 2920,
+        "room": "default",
+        "id": "25",
+        "status": "dead",
         "alarm": "off",
-        "detection": false
+        "detection": false,
+        "alias": "None"
     }
 }
